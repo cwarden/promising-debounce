@@ -5,7 +5,7 @@
         (if (nil? start)
           (do
             (>! c' loc)
-            (recur (js/Date.)))
+            (recur (js/Date.) nil))
           (let [loc (<! c)]
             (if (>= (- (js/Date.) start) ms)
               (recur nil loc)
