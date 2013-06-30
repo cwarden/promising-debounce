@@ -1,5 +1,5 @@
 (defn debounce 
-  ([c ms] ((chan) c ms))
+  ([c ms] (debounce (chan) c ms))
   ([c' c ms]
     (go
       (loop [start nil loc (<! c)]
