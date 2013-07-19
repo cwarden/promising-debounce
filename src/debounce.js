@@ -22,9 +22,9 @@ var debounce = function(func, wait, immediate) {
 		}
 		timeout = setTimeout(later, wait);
 		if (callNow) {
+			deferred = $.Deferred();
 			$.when(func.apply(context, args))
 				.then(deferred.resolve, deferred.reject, deferred.notify);
-			deferred = $.Deferred();
 		}
 		return deferred.promise();
 	};

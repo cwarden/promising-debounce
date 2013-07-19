@@ -75,6 +75,23 @@ describe('debounce', function() {
 		beforeEach(function() {
 			debounced = debounce(spy, 100, 'immediate');
 		});
+		it('should provide result to all callers', function() {
+			var result1, result2;
+			runs(function() {
+				spy.andCallFake(_(resolveDummyPromiseAsync).partial('result1'));
+				promise = debounced().then(function(result) { result1 = result; });
+				spy.andCallFake(_(resolveDummyPromiseAsync).partial('result2'));
+				debounced().then(function(result) { result2 = result; });
+				jasmine.Clock.tick(100);
+			});
+			waitsFor(function() {
+				return promise.state() !== 'pending';
+			});
+			runs(function() {
+				expect(result1).toBe('result1');
+				expect(result2).toBe('result1');
+			});
+		});
 		it('should call the function immediately the first time invoked', function() {
 			debounced();
 			expect(spy.calls.length).toBe(1);
